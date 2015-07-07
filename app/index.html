@@ -1,40 +1,110 @@
 ﻿<!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+
+<html lang="en" ng-app="myApp" class="no-js">
+<!--<![endif]-->
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>New Direction Site</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
-  <link rel="stylesheet" href="app.css">
-  <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>New Direction Site</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css" />
+    <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+
 </head>
-<body>
-  <div>NewDirection</div>
-  <ul class="menu">
-    <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
-  </ul>
+<body ng-controller="StoreController as store">
 
-   <div ng-view></div>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>New Direction</h1>
+            <p>Low Price Guaranteed</p>
+        </div>
+        <div class="list-group">
 
-  <div>Angular seed app: v<span app-version></span></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="usr">Item:</label>
+                        <input type="text" class="form-control" id="usr">
+                        <a href="#" class="btn btn-info btn-lg">Search</a>
+                    </div>
 
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-  -->
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="app.js"></script>
-  <script src="view1/view1.js"></script>
-  <script src="view2/view2.js"></script>
-  <script src="components/version/version.js"></script>
-  <script src="components/version/version-directive.js"></script>
-  <script src="components/version/interpolate-filter.js"></script>
+                </div>
+                <!--<div class="col-sm-4">
+                    <h3>Column 2</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+                </div>
+                <div class="col-sm-4">
+                    <h3>Column 3</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+                </div>-->
+            </div>
+        </div>
+
+
+        <div class="list-group-item" ng-repeat="product in store.products">
+            <h3>{{product.name}} <em class="pull-right">{{product.price | currency}}</em></h3>
+            <div ng-controller="GalleryController as gallery" ng-show="product.images.length">
+                <div class="img-wrap">
+                    <img ng-src="{{product.images[gallery.current]}}" />
+                </div>
+            </div>
+            <section ng-controller="TabController as tab">
+                <ul class="nav nav-pills">
+                    <li ng-class="{ active:tab.isSet(1) }">
+                        <a href="" ng-click="tab.setTab(1)">Description</a>
+                    </li>
+                    <li ng-class="{ active:tab.isSet(2) }">
+                        <a href="" ng-click="tab.setTab(2)">Specs</a>
+                    </li>
+                    <li ng-class="{ active:tab.isSet(3) }">
+                        <a href="" ng-click="tab.setTab(3)">Reviews</a>
+                    </li>
+                </ul>
+                <div ng-show="tab.isSet(1)">
+                    <h4>Description</h4>
+                    <blockquote>{{product.description}}</blockquote>
+                </div>
+                <div ng-show="tab.isSet(2)">
+                    <h4>Specs</h4>
+                    <blockquote>Shine: {{product.shine}}</blockquote>
+                </div>
+
+                <!--  Review Tab's Content  -->
+                <div ng-show="tab.isSet(3)">
+                    <!--  Product Reviews List -->
+                    <ul>
+                        <h4>Reviews</h4>
+                        <li ng-repeat="review in product.reviews">
+                            <blockquote>
+                                <strong> {{review.stars}} Stars</strong>
+                                {{review.body}}
+                                <cite class="clearfix">{{review.author}}</cite>
+                            </blockquote>
+                        </li>
+                    </ul>
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+
+    <!-- In production use:
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+    -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="app.js"></script>
+    <script src="view1/view1.js"></script>
+    <script src="view2/view2.js"></script>
+    <script src="components/version/version.js"></script>
+    <script src="components/version/version-directive.js"></script>
+    <script src="components/version/interpolate-filter.js"></script>
 </body>
 </html>
